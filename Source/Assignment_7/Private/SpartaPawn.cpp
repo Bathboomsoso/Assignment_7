@@ -1,9 +1,10 @@
 #include "SpartaPawn.h"
 
+#include "EnhancedInputComponent.h"
+#include "SpartaPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Misc/MapErrors.h"
 
 ASpartaPawn::ASpartaPawn()
 {
@@ -40,4 +41,36 @@ void ASpartaPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		if (ASpartaPlayerController* PlayerController = Cast<ASpartaPlayerController>(GetController()))
+		{
+			if (PlayerController->MoveAction)
+			{
+				EnhancedInput->BindAction(
+					PlayerController->MoveAction,
+					ETriggerEvent::Triggered,
+					this,
+					&ASpartaPawn::Move
+					);
+			}
+			if (PlayerController->LookAction)
+			{
+				EnhancedInput->BindAction(
+					PlayerController->LookAction,
+					ETriggerEvent::Triggered,
+					this,
+					&ASpartaPawn::Look
+					);
+			}
+		}
+	}
+}
+
+void ASpartaPawn::Move(const FInputActionValue& Value)
+{
+}
+
+void ASpartaPawn::Look(const FInputActionValue& Value)
+{
 }

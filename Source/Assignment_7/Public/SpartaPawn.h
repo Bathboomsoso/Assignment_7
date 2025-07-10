@@ -6,6 +6,11 @@
 #include "GameFramework/Pawn.h"
 #include "SpartaPawn.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
+
+struct FInputActionValue;
+
 UCLASS()
 class ASSIGNMENT_7_API ASpartaPawn : public APawn
 {
@@ -30,6 +35,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UCameraComponent* CameraComponent;
+
+	UFUNCTION()
+	void Move(const FInputActionValue& Value);
+	UFUNCTION()
+	void Look(const FInputActionValue& Value);	
 
 
 	
