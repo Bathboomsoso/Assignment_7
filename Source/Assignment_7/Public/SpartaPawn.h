@@ -8,6 +8,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UFloatingPawnMovement;
 
 struct FInputActionValue;
 
@@ -35,6 +36,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UCameraComponent* CameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UFloatingPawnMovement* MovementComponent;
 
 	UFUNCTION()
 	void Move(const FInputActionValue& Value);

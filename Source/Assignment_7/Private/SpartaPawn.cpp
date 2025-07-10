@@ -5,6 +5,9 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "InputActionValue.h"
 
 ASpartaPawn::ASpartaPawn()
 {
@@ -23,6 +26,8 @@ ASpartaPawn::ASpartaPawn()
 	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	CameraComponent->SetupAttachment(SpringArmComponent);
+
+	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
 }
 
 void ASpartaPawn::BeginPlay()
@@ -69,8 +74,26 @@ void ASpartaPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 void ASpartaPawn::Move(const FInputActionValue& Value)
 {
+	if (!Controller) return;
+
+	const FVector2D MoveInput = Value.Get<FVector2D>();
+
+	if (!FMath::IsNearlyZero(MoveInput.X))
+	{
+		AddMovementInput(GetActorForwardVector(), MoveInput.X);
+	}
+
+	if (!FMath::IsNearlyZero(MoveInput.Y))
+	{
+		AddMovementInput(GetActorRightVector(), MoveInput.Y);
+	}
 }
+
 
 void ASpartaPawn::Look(const FInputActionValue& Value)
 {
+	FVector LookInput = Value.Get<FVector>();
+
+	AddControllerYawInput(LookInput.X);
+	AddControllerPitchInput(LookInput.Y);
 }
