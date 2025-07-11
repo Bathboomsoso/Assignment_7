@@ -4,12 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "InputActionValue.h"
 #include "SpartaPawn.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
-class UFloatingPawnMovement;
-
 struct FInputActionValue;
 
 UCLASS()
@@ -37,16 +36,21 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class UCameraComponent* CameraComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UFloatingPawnMovement* MovementComponent;
 
-	UFUNCTION()
-	void Move(const FInputActionValue& Value);
-	UFUNCTION()
-	void Look(const FInputActionValue& Value);	
-
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pawn Movement")
+	float MoveSpeed = 300.0f;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pawn Movement")
+	float RotationSpeed;
+
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	void MoveComplete(const FInputActionValue& Value);
+private:
+	
+	FVector2D MoveInputValue;
+	FVector2D LookInputValue;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
